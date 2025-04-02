@@ -1,0 +1,204 @@
+Problem Statements on MySQL Stored Procedures:
+
+1) Retrieve Employee Details by Department: Create a stored procedure that takes a department ID as input and returns all employees belonging to that department.
+
+DELIMITER //
+create procedure getempdetails1(in id int)
+begin
+select * from employees where dept_id = id;
+end//
+
+2) Insert New Employee Record: Write a stored procedure that inserts a new employee record into the emp table, ensuring all mandatory fields are provided.
+DELIMITER //
+create procedure insertemp1(in id int, in fname varchar(20),in lname varchar(30), in email varchar(35), in hdate date, in salary decimal, in did int)
+begin
+insert into employees values(id, fname, lname, email, hdate, salary, did);
+end//
+call insertemp1(5, 'Gunjan', 'Kumar', 'gunjan.kr.@example.com', '2025-08-22', 79560.00, 2)// 
+
+
+3) Delete Employees by Experience: Implement a stored procedure that removes employees who have less than a given number of years of experience.
+DELIMITER //
+create procedure delEmp(in exp int)
+begin
+delete from employees
+where datediff(curdate() , hire_date)/365 < exp;
+end //
+call delEmp(5)//
+
+
+4) Generate Employee Count Report: Create a stored procedure that returns the total number of employees in each department.
+
+
+DELIMITER //
+create procedure countEmp2()
+begin
+select  dept_id, dept_name  =
+(select dept_name from departments ),
+count(*) from employees 
+group by dept_id;
+end//
+
+
+
+DELIMITER //
+CREATE PROCEDURE countEmp3()
+BEGIN
+    SELECT 
+        e.dept_id, 
+        d.dept_name, 
+        COUNT(*) AS employee_count
+    FROM 
+        employees e
+    JOIN 
+        departments d
+    ON 
+        e.dept_id = d.dept_id
+    GROUP BY 
+        e.dept_id, d.dept_name;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+create procedure countEmp2()
+begin
+
+select e.dept_id, d.dept_name, count(*) AS employee_count from employees e join departments d on e.dept_id = d.dept_id group by e.dept_id,d.dept_name;
+
+end//
+
+
+=============================================================================
+Problem Statements on MySQL Stored Procedures (Using IN and OUT Parameters)
+
+1) Retrieve Employee Count by Department
+
+Create a stored procedure that takes a department ID as an IN parameter and returns the number of employees in that department as an OUT parameter.
+
+
+create procedure deptempount(in did int , out count int)
+begin 
+select count(*) into count from employees where dept_id = did;
+end//
+
+2) Calculate Total Salary in a Department
+
+Develop a stored procedure that accepts a department ID as an IN parameter and returns the total salary expenditure of that department as an OUT parameter.
+
+create procedure deptCompensation(in did int, out total_salary decimal)
+begin 
+select sum(salary) into total_salary from employees where dept_id = did;
+end//
+
+3) Find Maximum Salary in a Department
+Implement a stored procedure that takes a department ID as an IN parameter and returns the highest salary in that department as an OUT parameter.
+
+
+create procedure maxsal(in did int, out maxSalary int)
+begin
+select max(salary) from employees where dept_id = did;
+end//
+
+4) Update Employee Salary by Percentage
+Create a stored procedure where the IN parameters are the department ID and percentage increase, and it updates the salary of all employees in that department accordingly.
+
+
+DELIMITER //
+drop procedure if exists incrementSal//
+CREATE PROCEDURE incrementSal(IN did INT, IN per DECIMAL(5,2))
+BEGIN
+    UPDATE employees
+    SET salary = salary + (salary * (per / 100))
+    WHERE dept_id = did;
+select * from employees;
+END //
+
+DELIMITER ;
+
+5) Get Employee Details by ID
+
+Develop a stored procedure that takes an employee ID as an IN parameter and returns their name, salary, and department ID as OUT parameters.
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS empDetails;
+
+CREATE PROCEDURE empDetails(
+    IN eid INT,
+    OUT fname VARCHAR(50),
+    OUT lname VARCHAR(50),
+    OUT sal DECIMAL(10, 2),
+    OUT did INT
+)
+BEGIN
+    SELECT first_name, last_name, salary, dept_id
+    INTO fname, lname, sal, did
+    FROM employees
+    WHERE emp_id = eid;
+END //
+
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+call insertemp1(5, 'Kabir', 'Singh', 'kabir.singh@example.com', '2025-05-05', 68000.00, 2);
+call insertemp1(6, 'Diya', 'Chauhan', 'diya.chauhan@example.com', '2025-06-15', 74000.00, 3);
+call insertemp1(7, 'Arjun', 'Mehta', 'arjun.mehta@example.com', '2025-07-20', 80000.00, 1);
+call insertemp1(8, 'Sara', 'Khan', 'sara.khan@example.com', '2025-08-25', 67000.00, 2);
+call insertemp1(9, 'Rahul', 'Mishra', 'rahul.mishra@example.com', '2025-09-10', 75000.00, 3);
+call insertemp1(10, 'Meera', 'Joshi', 'meera.joshi@example.com', '2025-10-15', 69000.00, 1);
+call insertemp1(11, 'Ayaan', 'Reddy', 'ayaan.reddy@example.com', '2025-11-20', 77000.00, 2);
+call insertemp1(12, 'Priya', 'Kapoor', 'priya.kapoor@example.com', '2025-12-25', 64000.00, 3);
+call insertemp1(13, 'Nikhil', 'Jain', 'nikhil.jain@example.com', '2025-01-10', 80000.00, 1);
+call insertemp1(14, 'Riya', 'Malhotra', 'riya.malhotra@example.com', '2025-02-15', 72000.00, 2);
+call insertemp1(15, 'Aditya', 'Roy', 'aditya.roy@example.com', '2025-03-20', 70000.00, 3);
+call insertemp1(16, 'Tanya', 'Bansal', 'tanya.bansal@example.com', '2025-04-25', 78000.00, 1);
+call insertemp1(17, 'Vikram', 'Das', 'vikram.das@example.com', '2025-05-30', 69000.00, 2);
+call insertemp1(18, 'Kritika', 'Agarwal', 'kritika.agarwal@example.com', '2025-06-05', 77000.00, 3);
+call insertemp1(19, 'Manish', 'Chatterjee', 'manish.chatterjee@example.com', '2025-07-10', 73000.00, 1);
+call insertemp1(20, 'Sneha', 'Nair', 'sneha.nair@example.com', '2025-08-15', 79000.00, 2);
