@@ -1,0 +1,93 @@
+
+Q1 - Create a student database
+ 
+use student;
+----------------------------------------------------------------
+Q2 - Connect to student database
+
+db.createCollection('user')
+----------------------------------------------------------------
+Q3-Insert following records into the "users" collection 
+
+db.user.insertMany([ {firstName: "Steve", lastName: "Haines", age: 39, gender : 'M'},
+ {firstName: "Michael", lastName: "Obama", age: 25, gender : 'M'},
+ {firstName: "Ram", lastName: "Das", age: 45, gender : 'M'},
+ {firstName: "Chetan", lastName: "Barot", age: 30, gender : 'M'},
+
+ {firstName: "Jaya", lastName: "Kumari", age: 35, gender : 'F'},
+
+ {firstName: "Seeta", lastName: "Kumari", age: 22, gender : 'F'},
+
+ {firstName: "Shiv", lastName: "Patil", age: 57, gender : 'M'},
+
+ {firstName: "Rachna", lastName: "Sharma", age: 57, gender : 'M'},
+
+ {firstName: "Alex", lastName: "Mathew", age: 48, gender : 'M'},
+
+ {firstName: "Gracy", lastName: "Abreo", age: 72, gender : 'F'},
+
+ {firstName: "Ranjan", lastName: "Patil", age: 60, gender : 'M', address:
+{"street": "Phase1", "zipcode": "400049", "state": "Maharashtra" }} ])
+
+----------------------------------------------------------------
+
+Q4. Display the data from the users collection
+
+db.user.find()
+
+----------------------------------------------------------------
+
+Q5. Sort the records in ascending order of age.
+
+db.user.find().sort({age: -1})
+-----------------------------------------------------------------
+
+6. Display the records with last name Kumari
+- db.user.find({lastName: "Kumari"})
+
+7. Display the records of gender Male.
+- db.user.find({gender : 'M'})
+-----------------------------------------------------------------
+
+8.Display the only first name, last name and age of users whose age is less than 30 years
+- db.user.find({ age: { $lt: 30 } }, { firstName: 1, lastName: 1, age: 1 })
+-----------------------------------------------------------------
+
+9. Display the records of age greater than 30 years
+- db.user.find({ age : { $gt : 30 } })
+-----------------------------------------------------------------
+
+10. Display the records whose age is 57 years.
+- db.user.find({ age :{$eq: 57} })
+-----------------------------------------------------------------
+
+11. Update the record of user mentioned in (j), set it’s age to 73
+- db.user.updateOne({firstName: "Ranjan"}, {$set: {age : 73} })
+-----------------------------------------------------------------
+
+12. Update the record of user mentioned in (d), increment it’s age by 3.
+-  db.user.updateOne({firstName: "Jaya"}, {$inc: { age : 3} })
+-----------------------------------------------------------------
+
+13. Remove age from the record (i)
+- db.user.updateOne({ firstName: "Gracy" }, { $unset: { age: "" } });
+-----------------------------------------------------------------
+
+14. Remove all the parameters for user with first name “Steve” from the record.
+
+	db.user.deleteMany({firstName : "Steve"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
